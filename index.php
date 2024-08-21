@@ -11,6 +11,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     $Phone = $_POST['Phone'];
     $Email = $_POST['Email'];
     $Password = $_POST['Password'];
+    $Password_c = $_POST['Password_c'];
     $Radio = $_POST['Radio'];
     // Full name 
     if(empty(trim($_POST['FullName']))){
@@ -37,7 +38,9 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
      if(empty(trim($_POST['Password']))){
         $errors = "Password must not be empty";
     }else{
-        $Password = trim($_POST['Password']);
+        if($Password == $Password_c){
+            $Password = trim($_POST['Password']);
+        }
     }
      // radio
      if(empty(trim($_POST['Radio']))){
@@ -81,9 +84,16 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                                     <label for="" class="form-label">Email</label>
                                     <input type="text" class="form-control" required name="Email">
                                 </div>
-                                <div class="form-control mt-3">
-                                    <label for="" class="form-label">Password</label name="Password">
+                                <div class="form-control gap-2 mt-3 d-flex">
+                                    
+                                    <div class="col-sm">
+                                        <label for="" class="form-label ">Password</label name="Password">
                                     <input type="text" class="form-control">
+                                    </div>
+                                    <div class="col-sm">
+                                        <label for="" class="form-label ">Create Password</label name="Password_c">
+                                    <input type="text" class="form-control">
+                                    </div>
                                 </div>
                                 <div class="d-flex justify-content-center  m-3">
                                     <div class="form-radio  form-check-inline">
