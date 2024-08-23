@@ -21,7 +21,7 @@ if (mysqli_num_rows($result) > 0) {
     echo "<td>Phone</td>";
     echo "<td>Email</td>";
     echo "<td>Password</td>";
-    echo "<td>Check</td>";
+    echo "<td>Radio</td>";
     echo "</tr>";
 
     while ($row = mysqli_fetch_assoc($result)) {
@@ -31,7 +31,7 @@ if (mysqli_num_rows($result) > 0) {
         echo "<td>" . $row['Phone'] . "</td>";
         echo "<td>" . $row['Email'] . "</td>";
         echo "<td>" . $row['Password'] . "</td>";
-        echo "<td>" . $row['Check'] . "</td>";
+        echo "<td>" . $row['Radio'] . "</td>";
         echo "</tr>";
     }
     echo "</table>";
