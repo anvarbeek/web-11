@@ -1,12 +1,14 @@
+
+
 <?php
-$localhost = 'localhost';
-$username = 'root';
-$password = '';
-$db_name = 'users_db';
+$severance = "localhost";
+$username = "root";
+$password = "";
+$dbname = "users_db";
 
-$con = mysqli_connect($localhost,$username,$password,$db_name);
+$con = mysqli_connect($severance, $username, $password, $dbname);
 
-if(!$con){
-    die ("Ma'lumotlar bazasiga ulanmagan !!!" .mysqli_connect_error());
+if (!$con) {
+  die("Connection failed: " . mysqli_connect_error());
 }
 ?>

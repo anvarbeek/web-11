@@ -3,12 +3,12 @@ include 'header.php';
 include 'config.php';
 ?>
 
-<h1>Foydalanuvchilar Ro'yhati</h1>
+<h1 class="text-center text-light fw-bold">Foydalanuvchilar Ro'yhati</h1>
 
 <?php
-if (isset($_GET['success']) && $_GET['success'] == 'good') {
-    echo '<div class="alert alert-success">User qoshildi</div>';
-}
+// if (isset($_GET['success']) && $_GET['success'] == 'good') {
+//     echo '<div class="alert alert-success col-4 ">User qoshildi</div>';
+// }
 
 $sql = "SELECT * FROM sign_up";
 $result = mysqli_query($con, $sql);

@@ -4,46 +4,46 @@ include 'config.php';
 
 $errors = [];
 
-$FullName = $Phone = $Email = $Password = $Radio = '';
+$FullName = $Phone = $Email = $Password = $Radio = "";
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-    $FullName = $_POST['FullName'];
-    $Phone = $_POST['Phone'];
-    $Email = $_POST['Email'];
-    $Password = $_POST['Password'];
-    $Password_c = $_POST['Password_c'];
-    $Radio = $_POST['Radio'];
+    // $FullName = $_POST['FullName'];
+    // $Phone = $_POST['Phone'];
+    // $Email = $_POST['Email'];
+    // $Password = $_POST['Password'];
+    // $Password_c = $_POST['Password_c'];
+    // $Radio = $_POST['Radio'];
     // Full name 
     if (empty(trim($_POST['FullName']))) {
-        $errors = "Full Name must not be empty";
+        $errors[] = "Full Name must not be empty";
     } else {
         $FullName = trim($_POST['FullName']);
     }
     // Phone
     if (empty(trim($_POST['Phone']))) {
-        $errors = "Phone must not be empty";
+        $errors[] = "Phone must not be empty";
     } else {
         $Phone = trim($_POST['Phone']);
     }
     // Email  && preg_match('/^[a-z0-9._-]+@[a-z0-9.]+\.[a-z]{2,}$/i', $_POST['Email'])
     if (empty(trim($_POST['Email']))) {
-        $errors = "Email must not be empty";
+        $errors[] = "Email must not be empty";
     } elseif (!filter_var($_POST['Email'], FILTER_VALIDATE_EMAIL)) {
-        $errors = "email yoq";
+        $errors[] = "email yoq";
     } else {
         $Email = trim($_POST['Email']);
     }
     // Password && preg_match("/^[a-z0-9]{2,}$/i", $_POST["Password"]))
     if (empty(trim($_POST['Password']))) {
-        $errors = "Password must not be empty";
-    } elseif (strlen(trim($_POST["Password"])) < 6 ) {
+        $errors[] = "Password must not be empty";
+    } elseif (strlen(trim($_POST["Password"])) < 3) {
         $errors[] = " Password 6dan kop bo'lsin, [a-z][0-9] belgilar yordamida";
     } else {
         $Password = trim($_POST['Password']);
     }
     // radio
     if (empty(trim($_POST['Radio']))) {
-        $errors = "Type must not be empty";
+        $errors[] = "Type must not be empty";
     } else {
         $Radio = trim($_POST['Radio']);
     }
@@ -53,26 +53,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     //error bo'lmasa , usersni ma'lumotlar bazasiga yuboradi
     if (empty($errors)) {
-        $sql = "INSERT INTO  sign_up(ID, FullName, Phone, Email, Password, Radio,)VALUES('$FullName', '$Phone', '$Email', '$Password', '$radio')";
-        if (mysqli_query($conn, $sql)) {
+        $stmt = $con->prepare("INSERT INTO  sign_up (FullName, Phone, Email, Password, Radio) VALUES(?,?,?,?,?)");
+        $stmt->bind_param("sssss", $FullName, $Phone, $Email, $Password, $Radio);
+
+        // $sql = "INSERT INTO  sign_up (FullName, Phone, Email, Password, Radio) VALUES ('$FullName', '$Phone', '$Email', '$Password' ,'$Radio')";
+        if ($stmt->execute()) {
             header("location:panel.php?success=good ");
         } else {
-            $errors[] = "Xatolik ma'lumotlar yuborilmadi." . mysqli_error($con);
+            // $errors[] = "Xatolik ma'lumotlar yuborilmadi." . mysqli_error($con);
+            echo "Error:" . $stmt->error;
         }
     } else {
         $errors[] = "Xatolik ma'lumotlar yuborilmadi." . mysqli_error($con);
     }
+    // $stmt->close();
 }
-
-
-
-
-
 ?>
-
-
-
-
 <div class="conteiner">
     <div class="row " style=" height:100vh;">
         <div class="col d-flex justify-content-center align-items-center">
@@ -84,7 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     </div>
                 </div>
                 <div class="card-body">
-                    <form action="panel.php" method="post">
+                    <form action="index.php" method="POST">
                         <div class="form-group col-sm-dm p-4">
                             <div class="form-control">
                                 <label for="" class="form-label">Full name</label>
@@ -101,24 +97,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <div class="form-control gap-2 mt-3 d-flex">
 
                                 <div class="col-sm">
-                                    <label for="" class="form-label ">Password</label name="Password">
-                                    <input type="text" class="form-control">
+                                    <label for="" class="form-label ">Password</label >
+                                    <input type="password" class="form-control" name="Password">
                                 </div>
                                 <div class="col-sm">
-                                    <label for="" class="form-label ">Create Password</label name="Password_c">
-                                    <input type="text" class="form-control">
+                                    <label for="" class="form-label ">Create Password</label>
+                                    <input type="password" class="form-control"  name="Password_c">
                                 </div>
                             </div>
                             <div class="d-flex justify-content-center  m-3">
                                 <div class="form-radio  form-check-inline">
-                                    <input class="form-radio-input" type="radio" value="user" name="radio" required>
+                                    <input class="form-radio-input" type="radio" value="user" name="Radio" required>
                                     <label class="form-radio-label">
                                         User
                                     </label>
 
                                 </div>
                                 <div class="form-radio form-check-inline">
-                                    <input class="form-radio-input" type="radio" value="admin" name="radio" required>
+                                    <input class="form-radio-input" type="radio" value="admin" name="Radio" required>
                                     <label class="form-radio-label">
                                         Admin
                                     </label>
@@ -126,7 +122,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 </div>
                             </div>
                             <div class="d-grid m-3">
-                                <button class="btn btn-success">ok</button>
+                                <button class="btn btn-success" type="submit">ok</button>
                             </div>
 
                         </div>
